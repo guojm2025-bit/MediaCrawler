@@ -1,0 +1,398 @@
+/* 德州扑克游戏样式 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.game-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    gap: 20px;
+    padding: 20px;
+}
+
+.game-header {
+    grid-column: 1 / -1;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.game-header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 1.2em;
+    flex-wrap: wrap;
+}
+
+.pot-info, .phase-info, .players-info, .auto-status-info {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin: 2px;
+}
+
+.game-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background: radial-gradient(ellipse at center, rgba(0, 120, 0, 0.4), rgba(0, 80, 0, 0.3));
+    border-radius: 50%;
+    border: 8px solid #8B4513;
+    padding: 40px;
+    position: relative;
+    min-height: 600px;
+    width: 800px;
+    margin: 0 auto;
+}
+
+.community-cards {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.cards-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.card {
+    width: 80px;
+    height: 112px;
+    background: #fff;
+    border: 2px solid #333;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+}
+
+.card.placeholder {
+    background: #666;
+    color: #999;
+    font-size: 2em;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.action-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+}
+
+.fold { background: #f44336; color: white; }
+.check { background: #2196F3; color: white; }
+.call { background: #4CAF50; color: white; }
+.raise { background: #FF9800; color: white; }
+.allin { background: #9C27B0; color: white; }
+
+.game-controls {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    height: fit-content;
+}
+
+.game-controls input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.control-btn {
+    width: 100%;
+    padding: 12px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1em;
+    margin-bottom: 10px;
+    transition: background 0.3s ease;
+}
+
+.control-btn:hover {
+    background: #45a049;
+}
+
+.connection-status {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.connected {
+    background: rgba(76, 175, 80, 0.3);
+    color: #4CAF50;
+}
+
+.disconnected {
+    background: rgba(244, 67, 54, 0.3);
+    color: #f44336;
+}
+
+.message-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(33, 150, 243, 0.9);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.message-toast.show {
+    transform: translateX(0);
+}
+
+.game-log {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 400px;
+    max-height: 200px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.log-content {
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 10px;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* 6人桌玩家布局 */
+.players-area {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    margin: 20px auto;
+}
+
+.player {
+    position: absolute;
+    width: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.player.current-player {
+    border-color: #FFD700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.player.active {
+    border-color: #4CAF50;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+    transform: scale(1.05);
+}
+
+.player.folded {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.player.ai-player {
+    border-left: 4px solid #2196F3;
+}
+
+.empty-seat {
+    opacity: 0.3;
+    border-style: dashed;
+}
+
+/* 6人桌位置布局 */
+.player-seat-1 { top: 0; left: 50%; transform: translateX(-50%); }
+.player-seat-2 { top: 25%; right: 0; }
+.player-seat-3 { bottom: 25%; right: 0; }
+.player-seat-4 { bottom: 0; left: 50%; transform: translateX(-50%); }
+.player-seat-5 { bottom: 25%; left: 0; }
+.player-seat-6 { top: 25%; left: 0; }
+
+.player-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.player-chips {
+    font-size: 0.8em;
+    color: #FFD700;
+    margin-bottom: 3px;
+}
+
+.player-bet {
+    font-size: 0.8em;
+    color: #FF6B6B;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.player-status {
+    font-size: 0.7em;
+    color: #FFF;
+    opacity: 0.8;
+}
+
+.ai-indicator {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #2196F3;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.6em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.badge {
+    display: inline-block;
+    background: #FF5722;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.6em;
+    line-height: 20px;
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+.badge.dealer { background: #9C27B0; }
+.badge.sb { background: #FF9800; }
+.badge.bb { background: #F44336; }
+
+.empty-seat-label {
+    color: #999;
+    font-style: italic;
+    font-size: 0.8em;
+}
+
+/* 自动游戏控制按钮 */
+.auto-btn {
+    background: #673AB7;
+    margin-bottom: 5px;
+}
+
+.auto-btn:hover {
+    background: #5E35B1;
+}
+
+.auto-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+    .game-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+    }
+    
+    .game-table {
+        width: 100%;
+        max-width: 700px;
+    }
+    
+    .players-area {
+        width: 500px;
+        height: 350px;
+    }
+    
+    .player {
+        width: 100px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-header h1 {
+        font-size: 2em;
+    }
+    
+    .game-info {
+        gap: 15px;
+        font-size: 1em;
+    }
+    
+    .players-area {
+        width: 400px;
+        height: 280px;
+    }
+    
+    .player {
+        width: 80px;
+        padding: 6px;
+        font-size: 0.8em;
+    }
+    
+    .card {
+        width: 60px;
+        height: 84px;
+        font-size: 1em;
+    }
+}

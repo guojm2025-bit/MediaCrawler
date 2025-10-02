@@ -1,0 +1,101 @@
+# 德州扑克游戏配置文件
+# Texas Hold'em Poker Game Configuration
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# 游戏基本配置
+poker:
+  game:
+    # 游戏桌基本设置
+    max-players: 6           # 最大玩家数
+    min-players: 2           # 最小玩家数
+    default-chips: 1000      # 默认筹码数量
+    
+    # 盲注设置
+    small-blind: 10          # 小盲注
+    big-blind: 20            # 大盲注
+    blind-increase-interval: 300000  # 盲注上升间隔（毫秒，5分钟）
+    blind-increase-factor: 1.5       # 盲注上升倍数
+    
+    # 时间设置
+    ai-decision-delay: 2000          # AI决策延迟（毫秒）
+    phase-transition-delay: 3000     # 阶段转换延迟（毫秒）
+    game-end-delay: 5000            # 游戏结束延迟（毫秒）
+    human-player-timeout: 30000     # 人类玩家超时时间（毫秒）
+    
+    # AI设置
+    ai:
+      # AI难度分布
+      difficulty-distribution:
+        easy: 20      # 简单AI比例（%）
+        medium: 50    # 中等AI比例（%）
+        hard: 25      # 困难AI比例（%）
+        expert: 5     # 专家AI比例（%）
+      
+      # AI行为参数
+      rationality-factor: 0.8    # 理性因子（0-1）
+      bluff-frequency: 0.1       # 虚张声势频率
+      conservative-factor: 0.6   # 保守因子
+      aggressive-factor: 0.4     # 激进因子
+
+# WebSocket配置
+websocket:
+  endpoint: /ws/game
+  allowed-origins: "*"
+  buffer-size: 8192
+
+# 日志配置
+logging:
+  level:
+    com.gjm.pk: DEBUG
+    org.springframework.web.socket: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/poker-game.log
+    max-size: 10MB
+    max-history: 30
+
+# 数据库配置（可选）
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+# 性能监控配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,beans, mappings
+  endpoint:
+    health:
+      show-details: always
+
+# 应用信息
+info:
+  app:
+    name: Texas Hold'em Poker Game
+    version: 1.0.0
+    description: 6人桌德州扑克自动游戏系统
+    author: guojianming

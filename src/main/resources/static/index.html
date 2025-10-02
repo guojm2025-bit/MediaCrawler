@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>德州扑克游戏</title>
+    <link rel="stylesheet" href="/css/game.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1><i class="fas fa-spade"></i> 德州扑克游戏 (6人桌) <i class="fas fa-heart"></i></h1>
+            <div class="game-info">
+                <span class="pot-info">奖池: $<span id="pot">0</span></span>
+                <span class="phase-info">阶段: <span id="phase">等待中</span></span>
+                <span class="players-info">玩家: <span id="player-count">0</span>/6</span>
+                <span class="auto-status-info">自动模式: <span id="auto-status">关闭</span></span>
+            </div>
+        </header>
+
+        <main class="game-table">
+            <!-- 公共牌区域 -->
+            <div class="community-cards">
+                <h3>公共牌</h3>
+                <div class="cards-container" id="community-cards">
+                    <div class="card placeholder">?</div>
+                    <div class="card placeholder">?</div>
+                    <div class="card placeholder">?</div>
+                    <div class="card placeholder">?</div>
+                    <div class="card placeholder">?</div>
+                </div>
+            </div>
+
+            <!-- 玩家区域 -->
+            <div class="players-area" id="players-area">
+                <!-- 玩家位置将通过JavaScript动态生成 -->
+            </div>
+
+            <!-- 当前玩家手牌 -->
+            <div class="player-hand">
+                <h3>你的手牌</h3>
+                <div class="cards-container" id="player-cards">
+                    <div class="card placeholder">?</div>
+                    <div class="card placeholder">?</div>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <button id="fold-btn" class="action-btn fold">弃牌</button>
+                <button id="check-btn" class="action-btn check">看牌</button>
+                <button id="call-btn" class="action-btn call">跟注</button>
+                <button id="raise-btn" class="action-btn raise">加注</button>
+                <button id="allin-btn" class="action-btn allin">全下</button>
+                <div class="bet-input">
+                    <input type="number" id="bet-amount" min="0" placeholder="下注金额">
+                </div>
+            </div>
+        </main>
+
+        <!-- 游戏控制面板 -->
+        <aside class="game-controls">
+            <div class="player-join">
+                <h3>加入游戏</h3>
+                <input type="text" id="player-name" placeholder="玩家名称" maxlength="20">
+                <input type="number" id="player-chips" placeholder="筹码数量" min="100" value="1000">
+                <button id="join-btn" class="control-btn">加入游戏</button>
+            </div>
+            
+            <div class="game-control">
+                <button id="create-auto-btn" class="control-btn auto-btn">创建6人桌</button>
+                <button id="start-auto-btn" class="control-btn auto-btn" disabled>开始自动游戏</button>
+                <button id="stop-auto-btn" class="control-btn auto-btn" disabled>停止自动游戏</button>
+                <button id="start-btn" class="control-btn">开始游戏</button>
+                <button id="reset-btn" class="control-btn">重置游戏</button>
+            </div>
+
+            <div class="connection-status">
+                <span id="connection-status" class="disconnected">未连接</span>
+            </div>
+        </aside>
+    </div>
+
+    <!-- 消息提示 -->
+    <div class="message-toast" id="message-toast"></div>
+
+    <!-- 游戏日志 -->
+    <div class="game-log">
+        <h4>游戏日志</h4>
+        <div class="log-content" id="game-log"></div>
+    </div>
+
+    <script src="/js/game.js"></script>
+</body>
+</html>
